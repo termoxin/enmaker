@@ -1,0 +1,15 @@
+{
+  "name": "enmaker",
+  "version": "1.0.0",
+  "description": "The application serves to create simple chunks to help language learners. It is using movies, cartoons, and subtitles to produce chunks",
+  "main": "index.js",
+  "repository": "https://github.com/termoxin/enmaker.git",
+  "author": "Rostislav Futornoy",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "esm": "^3.2.25",
+    "fluent-ffmpeg": "^2.1.2",
+    "parallelizer": "^1.0.0"
+  }
+}
