@@ -64,9 +64,9 @@ isexe@^2.0.0:
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
 parallelizer@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/parallelizer/-/parallelizer-1.0.0.tgz#1bfe0536e6501ba3132b4e8af692282e141e8c6e"
-  integrity sha512-s4HdymSnbwAOdKN7beEiNZQP96uUO94BUORYKU+/xqe4yGJeElYOZhHEdfzUL8aEeEIxmILOHyIsDACsvOTJUw==
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/parallelizer/-/parallelizer-1.0.1.tgz#4e4b780c1191274f237ddd6b98d4e2094ff4ad9c"
+  integrity sha512-HgVLcXMX4iL8E9e96tOxvbRF/7QHQLpQqZvOYQwQyNH+thD1JW20qB2xiFNUoWPZk5GGKiSRKv6yUTsknZHQbw==
   dependencies:
     esm "^3.2.25"
 

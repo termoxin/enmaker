@@ -10,6 +10,6 @@
     "chalk": "^4.0.0",
     "esm": "^3.2.25",
     "fluent-ffmpeg": "^2.1.2",
-    "parallelizer": "^1.0.0"
+    "parallelizer": "^1.0.1"
   }
 }
