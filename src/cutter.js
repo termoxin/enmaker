@@ -1,20 +1,16 @@
 import path from "path";
 import ffmpeg from "fluent-ffmpeg";
-import {
-  getFileContent,
-  getSectionByWord,
-  srtTimeToSeconds,
-} from "parallelizer";
-
 import chalk from "chalk";
+import { srtTimeToSeconds } from "parallelizer";
 
-const phrase = process.argv.slice(2).join(" ");
+import { toSnakeCase } from "./helpers/string";
 
-const createOutPutPath = (filename) =>
-  path.resolve(__dirname, "../output", `${filename}.mp4`);
+export const createOutPutPath = (filename, ext = ".mp4") =>
+  path.resolve(__dirname, "../output", `${toSnakeCase(filename)}${ext}`);
 
 const cut = (filename, path, start, end) => {
   const startTimeInSeconds = srtTimeToSeconds(start);
+
   const duration = srtTimeToSeconds(end) - startTimeInSeconds;
 
   return new Promise((resolve, reject) => {
@@ -28,18 +24,18 @@ const cut = (filename, path, start, end) => {
   });
 };
 
-const runCutter = async () => {
-  if (phrase) {
-    const en = await getFileContent(path.resolve(__dirname, "../en.srt"));
-    const moviePath = path.resolve(__dirname, "../", "movie.mp4");
+export const cutter = async (filename, path, start, end) => {
+  if (filename) {
+    const result = await cut(filename, path, start, end);
 
-    const { startTimeWithMs, endTimeWithMs } = getSectionByWord(phrase, en)[0];
+    console.log(
+      chalk.green(
+        `You've got it as ${chalk.bold.gray(`${toSnakeCase(filename)}.mp4`)} 👍`
+      )
+    );
 
-    await cut(phrase, moviePath, startTimeWithMs, endTimeWithMs);
-    console.log(chalk.green("You've got it 👍"));
+    return result;
   } else {
     console.log(chalk.red("Please provide a phrase🙏"));
   }
 };
-
-runCutter();
