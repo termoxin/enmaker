@@ -1,30 +1,65 @@
-import { getFileContent, getSections, glueStringsBy } from "parallelizer";
+import { parseBoth, parseByTimestamp, parseByName } from "parallelizer";
+
+import { getFileContent } from "./helpers/filesystem";
+import { glueStringsBy } from "./helpers/string";
 
 export const prettifyTranscript = (transcript) =>
   `${glueStringsBy(transcript, "content")}\n`;
 
-const getDoubleTranscript = async (start, end, path1, path2) => {
+const getDoubleTranscriptByTimestamp = async (start, end, path1, path2) => {
   const [en, ru] = await Promise.all([
     getFileContent(path1),
     getFileContent(path2),
   ]);
 
-  const transcripts = getSections({
+  const transcripts = parseBoth({
     start,
     end,
-    firstLanguage: en,
-    secondLanguage: ru,
-    secondLanguageSplitter: "\r\n",
+    firstSubtitles: en,
+    secondSubtitles: ru,
   });
 
   return transcripts;
 };
 
-export const transcriptor = async (start, end, path1, path2) => {
-  const transcripts = await getDoubleTranscript(start, end, path1, path2);
+const getDoubleTranscriptByPhrase = async (phrase, path1, path2) => {
+  const [en, ru] = await Promise.all([
+    getFileContent(path1),
+    getFileContent(path2),
+  ]);
 
-  const { startTimeWithMs } = transcripts[0][0];
-  const { endTimeWithMs } = transcripts[0].slice(-1)[0];
+  const { startTime, endTime } = parseByName(phrase, en)[0];
 
-  return { transcripts, start: startTimeWithMs, end: endTimeWithMs };
+  const transcripts = parseBoth({
+    start: startTime,
+    end: endTime,
+    firstSubtitles: en,
+    secondSubtitles: ru,
+  });
+
+  return transcripts;
+};
+
+export const getStartAndEndTimeFromTranscript = (transcript) => {
+  const { startTimeWithMs } = transcript[0];
+  const { endTimeWithMs } = transcript.slice(-1)[0];
+
+  return { start: startTimeWithMs, end: endTimeWithMs };
+};
+
+export const transcriptorByTimestamp = async (start, end, path1, path2) => {
+  const transcripts = await getDoubleTranscriptByTimestamp(
+    start,
+    end,
+    path1,
+    path2
+  );
+
+  return { transcripts, ...getStartAndEndTimeFromTranscript(transcripts[0]) };
+};
+
+export const transcriptorByPhrase = async (phrase, path1, path2) => {
+  const transcripts = await getDoubleTranscriptByPhrase(phrase, path1, path2);
+
+  return { transcripts, ...getStartAndEndTimeFromTranscript(transcripts[0]) };
 };
