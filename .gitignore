@@ -91,6 +91,7 @@ out/
 config/defaultConfig.json
 .idea
 .vscode/launch.json
+output
 
 # Subtitle files
 
