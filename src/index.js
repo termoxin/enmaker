@@ -1,29 +1,31 @@
 import path from "path";
 import { promises as fs } from "fs";
-import args from "args";
 
+import config from "../config/defaultConfig.json";
 import { cutter, createOutPutPath } from "./cutter";
-import { transcriptor, prettifyTranscript } from "./transcriptor";
 
-const moviePath = path.resolve(__dirname, "../", "movie.mp4");
-const enSrtPath = path.resolve(__dirname, "../en.srt");
-const ruSrtPath = path.resolve(__dirname, "../ru.srt");
+import {
+  transcriptorByTimestamp,
+  prettifyTranscript,
+  transcriptorByPhrase,
+} from "./transcriptor.js";
 
-const run = async () => {
-  args
-    .option("filename", "The name with which the file will be saved")
-    .option("startTime", "The first(start) timestamp")
-    .option("endTime", "The second(end) timestamp");
+const __dirname = path.resolve();
 
-  const { filename, startTime, endTime } = args.parse(process.argv);
+const moviePath = path.resolve(__dirname, config.video);
+const enSrtPath = path.resolve(__dirname, config.firstSubtitles);
+const ruSrtPath = path.resolve(__dirname, config.secondSubtitles);
+
+export const runByTimestamp = async (options) => {
+  const { filename, startTime, endTime, offsetStart, offsetEnd } = options;
 
   const {
     transcripts: [enTranscript, ruTranscript],
     start,
     end,
-  } = await transcriptor(startTime, endTime, enSrtPath, ruSrtPath);
+  } = await transcriptorByTimestamp(startTime, endTime, enSrtPath, ruSrtPath);
 
-  await cutter(filename, moviePath, start, end);
+  await cutter(filename, moviePath, start, end, offsetStart, offsetEnd);
 
   await fs.writeFile(
     path.resolve(createOutPutPath(filename, ".txt")),
@@ -31,4 +33,17 @@ const run = async () => {
   );
 };
 
-run();
+export const runByPhrase = async ({ phrase, offsetStart, offsetEnd }) => {
+  const {
+    transcripts: [enTranscript, ruTranscript],
+    start,
+    end,
+  } = await transcriptorByPhrase(phrase, enSrtPath, ruSrtPath);
+
+  await cutter(phrase, moviePath, start, end, offsetStart, offsetEnd);
+
+  await fs.writeFile(
+    path.resolve(createOutPutPath(phrase, ".txt")),
+    `${prettifyTranscript(enTranscript)}\n${prettifyTranscript(ruTranscript)}`
+  );
+};
