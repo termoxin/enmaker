@@ -1,3 +1,6 @@
+export const glueStringsBy = (arr, key, joiner = "\n") =>
+  arr.map((v) => v[key]).join(joiner);
+
 export const toSnakeCase = (str) =>
   str &&
   str
