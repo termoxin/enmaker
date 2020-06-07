@@ -42,7 +42,9 @@ const cli = async () => {
   const { mode } = await inquirer.prompt(QUESTIONS.SELECT_MODE);
 
   if (mode === MODES.TIMESTAMP) {
-    questions.push(...Object.values(QUESTIONS));
+    questions.push(
+      ...[QUESTIONS.FILENAME, QUESTIONS.START_TIME, QUESTIONS.END_TIME]
+    );
 
     const answers = await inquirer.prompt(questions);
 
