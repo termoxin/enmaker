@@ -1,4 +1,4 @@
-import { parseBoth, parseByTimestamp, parseByName } from "parallelizer";
+import { parseBoth, parseByName } from "parallelizer";
 
 import { getFileContent } from "./helpers/filesystem";
 import { glueStringsBy } from "./helpers/string";
