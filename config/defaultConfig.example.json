@@ -1,5 +1,9 @@
 {
   "video": "",
   "firstSubtitles": "",
-  "secondSubtitles": ""
+  "secondSubtitles": "",
+  "offsetSections": {
+    "left": 0,
+    "right": 0
+  }
 }
