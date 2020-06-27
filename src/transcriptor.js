@@ -2,6 +2,7 @@ import { parseBoth, parseByName } from "parallelizer";
 
 import { getFileContent } from "./helpers/filesystem";
 import { glueStringsBy } from "./helpers/string";
+import config from "../config/defaultConfig.json";
 
 export const prettifyTranscript = (transcript) =>
   `${glueStringsBy(transcript, "content")}\n`;
@@ -27,6 +28,22 @@ const getDoubleTranscriptByPhrase = async (phrase, path1, path2) => {
     getFileContent(path1),
     getFileContent(path2),
   ]);
+
+  if (config.offsetSections) {
+    const sections = parseByName(phrase, en, config.offsetSections);
+
+    const { startTime } = sections[0];
+    const { endTime } = sections.slice(-1)[0];
+
+    const transcripts = parseBoth({
+      start: startTime,
+      end: endTime,
+      firstSubtitles: en,
+      secondSubtitles: ru,
+    });
+
+    return transcripts;
+  }
 
   const { startTime, endTime } = parseByName(phrase, en)[0];
 
