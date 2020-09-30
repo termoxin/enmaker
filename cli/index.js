@@ -39,7 +39,7 @@ const QUESTIONS = {
   LOAD_CACHE: {
     type: "confirm",
     name: "loadCache",
-    message: "Do you want to fill out the field using cache?",
+    message: "Do you want to fill out the fields using data from cache?",
   },
 };
 
