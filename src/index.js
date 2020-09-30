@@ -41,7 +41,11 @@ export const runByTimestamp = async (options) => {
       endTime,
     });
   } catch (err) {
-    console.log(chalk.red(err.message));
+    console.log(
+      chalk.red(
+        `Cannot cut this timestamps from the video ✂️  Try to adjust timestamps🗜`
+      )
+    );
   }
 };
 
