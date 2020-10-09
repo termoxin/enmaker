@@ -18,9 +18,27 @@ const moviePath = path.resolve(__dirname, config.video);
 const enSrtPath = path.resolve(__dirname, config.firstSubtitles);
 const ruSrtPath = path.resolve(__dirname, config.secondSubtitles);
 
+const isValidTimestamp = (timestamp) => !!Date.parse(`01/01/01 ${timestamp}`);
+
 export const runByTimestamp = async (options) => {
   try {
     const { filename, startTime, endTime, offsetStart, offsetEnd } = options;
+
+    if (!startTime) {
+      throw new Error("startTime cannot be empty");
+    }
+
+    if (!endTime) {
+      throw new Error("endTime cannot be empty");
+    }
+
+    if (!isValidTimestamp(startTime)) {
+      throw new Error("startTime is not valid");
+    }
+
+    if (!isValidTimestamp(endTime)) {
+      throw new Error("endTime is not valid");
+    }
 
     const {
       transcripts: [enTranscript, ruTranscript],
@@ -43,7 +61,7 @@ export const runByTimestamp = async (options) => {
   } catch (err) {
     console.log(
       chalk.red(
-        `Cannot cut this timestamps from the video ✂️  Try to adjust timestamps🗜`
+        `Cannot cut this timestamps from the video ✂️  Try to adjust timestamps🗜\nError message: ${err.message}`
       )
     );
   }
