@@ -184,10 +184,10 @@ os-tmpdir@~1.0.2:
   resolved "https://registry.yarnpkg.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
   integrity sha1-u+Z0BseaqFxc/sdm/lc0VV36EnQ=
 
-parallelizer@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/parallelizer/-/parallelizer-1.2.1.tgz#4d1af7ffebd41eebca1af85f6ddc1662c388d9b1"
-  integrity sha512-1E6Coo6X3w7UMOdIa81BxWgITmLQslW80dacM3HkG/4BHd8ZDLKNnb4mygJJSApvlHQAfPeLuJa+fXbNDuo//Q==
+parallelizer@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/parallelizer/-/parallelizer-1.3.1.tgz#370c3f0f43b75bce3772c2226757a7ca64520d3d"
+  integrity sha512-+0hjhPhGLoyqCfEsJFOlO2k6M06zXu5WleKJSfrvuUtdhlitoM7nRdub8js237zzY7gxovhx6gROdO5A9CPouA==
 
 ramda@^0.27.0:
   version "0.27.0"
