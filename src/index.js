@@ -11,6 +11,7 @@ import {
   transcriptorByPhrase,
 } from "./transcriptor.js";
 import { saveCache } from "./cache";
+import { createTemplate } from "./helpers/createTempate";
 
 const __dirname = path.resolve();
 
@@ -32,7 +33,12 @@ export const runByTimestamp = async (options) => {
 
     await fs.writeFile(
       path.resolve(createOutPutPath(filename, ".txt")),
-      `${prettifyTranscript(enTranscript)}\n${prettifyTranscript(ruTranscript)}`
+      createTemplate(
+        filename,
+        `${prettifyTranscript(enTranscript)}\n\n${prettifyTranscript(
+          ruTranscript
+        )}`
+      )
     );
 
     await saveCache(filename, {
@@ -61,7 +67,12 @@ export const runByPhrase = async ({ phrase, offsetStart, offsetEnd }) => {
 
     await fs.writeFile(
       path.resolve(createOutPutPath(phrase, ".txt")),
-      `${prettifyTranscript(enTranscript)}\n${prettifyTranscript(ruTranscript)}`
+      createTemplate(
+        phrase,
+        `${prettifyTranscript(enTranscript)}\n${prettifyTranscript(
+          ruTranscript
+        )}`
+      )
     );
   } catch (err) {
     console.log(chalk.red(err.message));

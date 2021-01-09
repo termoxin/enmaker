@@ -1,11 +1,11 @@
-import { parseBoth, parseByName } from "parallelizer";
+import { parseBoth, parseByName, formatSection } from "parallelizer";
 
 import { getFileContent } from "./helpers/filesystem";
 import { glueStringsBy } from "./helpers/string";
 import config from "../config/defaultConfig.json";
 
 export const prettifyTranscript = (transcript) =>
-  `${glueStringsBy(transcript, "content")}\n`;
+  formatSection(glueStringsBy(transcript, "content"));
 
 const getDoubleTranscriptByTimestamp = async (start, end, path1, path2) => {
   const [en, ru] = await Promise.all([
