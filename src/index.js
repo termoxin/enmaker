@@ -69,7 +69,7 @@ export const runByPhrase = async ({ phrase, offsetStart, offsetEnd }) => {
       path.resolve(createOutPutPath(phrase, ".txt")),
       createTemplate(
         phrase,
-        `${prettifyTranscript(enTranscript)}\n${prettifyTranscript(
+        `${prettifyTranscript(enTranscript)}\n\n${prettifyTranscript(
           ruTranscript
         )}`
       )
