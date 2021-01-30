@@ -1,6 +1,7 @@
 import path from "path";
 import { promises as fs } from "fs";
 import chalk from "chalk";
+import dotenv from "dotenv";
 
 import config from "../config/defaultConfig.json";
 import { cutter, createOutPutPath } from "./cutter";
@@ -12,6 +13,9 @@ import {
 } from "./transcriptor.js";
 import { saveCache } from "./cache";
 import { createTemplate } from "./helpers/createTempate";
+import { getPronunciation } from "./helpers/pronunciation";
+
+dotenv.config();
 
 const __dirname = path.resolve();
 
@@ -31,10 +35,13 @@ export const runByTimestamp = async (options) => {
 
     await cutter(filename, moviePath, start, end, offsetStart, offsetEnd);
 
+    const pronunciation = await getPronunciation(filename);
+
     await fs.writeFile(
       path.resolve(createOutPutPath(filename, ".txt")),
       createTemplate(
         filename,
+        pronunciation,
         `${prettifyTranscript(enTranscript)}\n\n${prettifyTranscript(
           ruTranscript
         )}`
@@ -64,17 +71,19 @@ export const runByPhrase = async ({ phrase, offsetStart, offsetEnd }) => {
     } = await transcriptorByPhrase(phrase, enSrtPath, ruSrtPath);
 
     await cutter(phrase, moviePath, start, end, offsetStart, offsetEnd);
+    const pronunciation = await getPronunciation(phrase);
 
     await fs.writeFile(
       path.resolve(createOutPutPath(phrase, ".txt")),
       createTemplate(
         phrase,
+        pronunciation || " ",
         `${prettifyTranscript(enTranscript)}\n\n${prettifyTranscript(
           ruTranscript
         )}`
       )
     );
   } catch (err) {
-    console.log(chalk.red(err.message));
+    console.log(err, chalk.red(err.message));
   }
 };
